@@ -2,7 +2,7 @@ document.getElementById('search-form').addEventListener('submit', function (even
     event.preventDefault();
 
     const currentDate = dayjs().format('DD/MM/YYYY');
-    const apiKey = '2fb2e898d56792b6d47cffb5c77a6d47';
+    const apiKey = 'use your own key';
     const city = document.getElementById('search-input').value;
     const queryURL = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&units=metric`;
     const inputHistory= document.getElementById('history')
