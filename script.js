@@ -1,14 +1,12 @@
 document.getElementById('search-form').addEventListener('submit', function (event) {
     event.preventDefault();
 
-    const currentDate = dayjs().format('DD/MM/YYYY');
-    const currentTime = dayjs().format('HH:mm:ss');
-    const apiKey = 'please add your api key';
+    const currentDate = dayjs().format('DD/MM/YYYY');   
+    const apiKey = '2fb2e898d56792b6d47cffb5c77a6d47';
     const city = document.getElementById('search-input').value;
     const queryURL = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&units=metric`;
-    const inputHistory= document.getElementById('history')
-
-    
+    const inputHistory= document.getElementById('history');
+    let inputCity = document.getElementById('search-input').value;
     
     fetch(queryURL)
       .then(response => {        
@@ -21,7 +19,7 @@ document.getElementById('search-form').addEventListener('submit', function (even
         const weatherToday = document.getElementById('today');
         const forecastFiveDays = document.getElementById('forecast');
 
-        let icon =data.list[0].weather[0].icon;
+        let icon = data.list[0].weather[0].icon;
         let iconUrl =  `https://openweathermap.org/img/wn/${icon}.png`;       
         
         // show weather current day
@@ -33,20 +31,27 @@ document.getElementById('search-form').addEventListener('submit', function (even
         `;
 
         // show weather for next 5 days
-        let fiveDay = () => {
+        const fiveDay = () => {
+          forecastFiveDays.innerHTML = '';
           for (let i = 0; i < data.list.length; i++) {
             let fiveDayDataList = data.list[i];
-            console.log(fiveDayDataList);
-            let fiveDayTime = fiveDayDataList.dt_txt;             
-            let fiveDayIconUrl = `https://openweathermap.org/img/w/${fiveDayDataList.weather[0].icon}.png`;           
-            forecastFiveDays.innerHTML += `
-                <div class="card m-2 p0">    
-                    <h3>${fiveDayTime}</h3>
+            // console.log(fiveDayDataList);
+            let apiDayDateTime = fiveDayDataList.dt_txt;      
+            const fiveDayDate = dayjs(apiDayDateTime).format('DD/MM/YYYY');   
+            const fiveDayTime = dayjs(apiDayDateTime).format('HH:mm:ss');
+            
+            // console.log(fiveDayTime); 
+            let fiveDayIconUrl = `https://openweathermap.org/img/w/${fiveDayDataList.weather[0].icon}.png`;  
+            if(fiveDayTime === '15:00:00') {                           
+              forecastFiveDays.innerHTML += `
+                <div class="card m-2 p-4 bg-primary">    
+                    <h3>${fiveDayDate}</h3>
                     <p> <img src="${fiveDayIconUrl}"></p>
                     <p>Temp: ${fiveDayDataList.main.temp}&degC;</p>     
                     <p>Wind: ${fiveDayDataList.wind.speed} KPH</p>               
                     <p>Humidity: ${fiveDayDataList.main.humidity}%</p>
-                </div>`;
+                </div>`;              
+            }                
           }
         };
         fiveDay();
