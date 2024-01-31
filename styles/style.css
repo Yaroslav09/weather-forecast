@@ -1,0 +1,25 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+.wrapper {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+#history button {
+    background-color: rgb(224, 222, 222);
+    margin-bottom: 6px;
+    padding: 4px;
+    border-radius: 5px;
+    border: none;
+}
+
+#history button:hover {
+    background-color: rgb(240, 237, 237);
+}

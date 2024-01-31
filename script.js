@@ -34,17 +34,15 @@ document.getElementById('search-form').addEventListener('submit', function (even
         const fiveDay = () => {
           forecastFiveDays.innerHTML = '';
           for (let i = 0; i < data.list.length; i++) {
-            let fiveDayDataList = data.list[i];
-            // console.log(fiveDayDataList);
+            let fiveDayDataList = data.list[i];            
             let apiDayDateTime = fiveDayDataList.dt_txt;      
             const fiveDayDate = dayjs(apiDayDateTime).format('DD/MM/YYYY');   
-            const fiveDayTime = dayjs(apiDayDateTime).format('HH:mm:ss');
+            const fiveDayTime = dayjs(apiDayDateTime).format('HH:mm:ss');           
             
-            // console.log(fiveDayTime); 
             let fiveDayIconUrl = `https://openweathermap.org/img/w/${fiveDayDataList.weather[0].icon}.png`;  
             if(fiveDayTime === '15:00:00') {                           
               forecastFiveDays.innerHTML += `
-                <div class="card m-2 p-4 bg-primary">    
+                <div class="card m-2 p-3 bg-primary">    
                     <h3>${fiveDayDate}</h3>
                     <p> <img src="${fiveDayIconUrl}"></p>
                     <p>Temp: ${fiveDayDataList.main.temp}&degC;</p>     
@@ -58,4 +56,28 @@ document.getElementById('search-form').addEventListener('submit', function (even
         
       })
       .catch(error => console.error(error));
+
+      const saveCity = (addNewCity) => {      
+        let cityNotEmty = false;
+        for (let i = 0; i < localStorage.length; i++) {
+            if (localStorage.getItem(`city${i}`) === addNewCity) {
+                cityNotEmty = true;
+                break;
+            }
+        }      
+        if (!cityNotEmty) {
+            localStorage.setItem(`city${localStorage.length}`, addNewCity);
+        }
+      };
+      saveCity(inputCity);
+      
+      const showSavedCity = () => {           
+        const buttonsSavedCity = Array.from({ length: localStorage.length }, (_, i) => {
+            const cityInput = localStorage.getItem(`city${i}`);
+            return cityInput !== null ? `<button>${cityInput}</button>` : '';
+        });
+    
+        inputHistory.innerHTML = buttonsSavedCity.join('');
+      };  
+      showSavedCity();
 });
